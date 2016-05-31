@@ -10,6 +10,7 @@ import subprocess
 import binascii
 import select
 import struct
+import datetime
 
 Debugging = False
 script_path = os.path.join(os.path.abspath(os.path.dirname(__file__)))
@@ -339,8 +340,9 @@ class Peripheral(BluepyHelper):
             if respType == 'ntfy' or respType == 'ind':
                 hnd = resp['hnd'][0]
                 data = resp['d'][0]
+                datatimestamp = datetime.datetime.now()
                 if self.delegate is not None:
-                    self.delegate.handleNotification(hnd, data)
+                    self.delegate.handleNotification(hnd, data, datatimestamp)
                 if respType not in wantType:
                     continue
             return resp
